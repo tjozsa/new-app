@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3-alpine' 
-            args '-v /root/.m2:/root/.m2 --network=docker_cd-tools-network' 
+            args '-p 44419:44419 -v /root/.m2:/root/.m2 --network=docker_cd-tools-network' 
         }
     }
     stages {
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-              sh 'java -jar /var/jenkins_home/workspace/todobackend-java/spincast-todobackend-inmemory/target/spincast-todobackend-inmemory-1.0.2.jar'
+              sh 'java -jar /var/jenkins_home/workspace/todobackend-java/spincast-todobackend-inmemory/target/spincast-todobackend-inmemory-1.0.2.jar &'
             }
         }
     }
