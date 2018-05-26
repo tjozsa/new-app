@@ -16,6 +16,13 @@ pipeline {
                echo 'Run tests here...'
             }
         }
+        stage('sonarqube') {
+            steps {
+                withEnv(["SONARQUBE_SERVER_URL=${SONARQUBE_SERVER}"]) {
+                    sh './gradlew -Dsonar.host.url=${SONARQUBE_SERVER_URL} sonarqube'
+                }
+            }
+        }
         stage('Publish Artifact') {
             steps {
                 withEnv(["ARTIFACTORY_SERVER_URL=${env.ARTIFACTORY_SERVER}", "ARTIFACTORY_LOGIN=admin", "ARTIFACTORY_PASSWORD=password", "ARTIFACT=spincast-todobackend-inmemory-1.0.2.jar"]) {
