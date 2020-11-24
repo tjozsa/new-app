@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3-alpine' 
-            args '-p 44419:44419 -v /root/.m2:/root/.m2 --network=docker_cd-tools-network' 
+            args '-p 44419:44419 -v /root/.m2:/root/.m2 --network=root_cd-tools-network' 
         }
     }
     stages {
@@ -19,7 +19,7 @@ pipeline {
         stage('sonarqube') {
             steps {
                 withEnv(["SONARQUBE_SERVER_URL=${SONARQUBE_SERVER}"]) {
-                    sh './gradlew -Dsonar.host.url=${SONARQUBE_SERVER_URL} sonarqube'
+                    sh 'mvn -Dsonar.host.url=${SONARQUBE_SERVER_URL} sonar:sonar'
                 }
             }
         }
